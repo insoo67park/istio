@@ -24,3 +24,4 @@ Istio 확장 (Proxy-Wasm 플러그인)에는 몇 가지 구성 요소가 있습�
 - gRPC 및 HTTP 호출을위한 API를 호출.
 - 메트릭 및 모니터링을위한 통계 및 로깅 API.   
    
+![Extending Istio/Envoy](https://istio.io/latest/docs/concepts/wasm/extending.svg)
