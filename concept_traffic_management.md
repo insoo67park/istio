@@ -343,5 +343,34 @@ Istio는 또한 다음 모델을 지원한다.
 
 - 무작위 : 요청이 무작위로 풀의 인스턴스로 전달됩니다.
 - 가중 : 요청이 특정 백분율에 따라 풀의 인스턴스로 전달됩니다.
-- 최소 요청 : 요청 수가 가장 적은 인스턴스로 요청이 전달됩니다.
+- 최소 요청 : 요청 수가 가장 적은 인스턴스로 요청이 전달됩니다.   
 각 옵션에 대한 자세한 내용은 Envoy로드 균형 조정 설명서를 참조한다.
+
+### 대상 규칙 예
+다음 예제 대상 규칙은로드 균형 조정 정책이 다른 my-svc 대상 서비스에 대해 서로 다른 세 가지 하위 집합을 구성한다.   
+<pre>
+<code>
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: my-destination-rule
+spec:
+  host: my-svc
+  trafficPolicy:
+    loadBalancer:
+      simple: RANDOM
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
+    trafficPolicy:
+      loadBalancer:
+        simple: ROUND_ROBIN
+  - name: v3
+    labels:
+      version: v3
+</code>
+</pre>
