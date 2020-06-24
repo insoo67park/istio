@@ -78,3 +78,12 @@ istiod와 함께 작동하여 키 및 인증서 순환을 대규모로 자동화
 다음 다이어그램은 자격 증명 제공 흐름을 보여준다.
 
 ![Istio 아이디 프로비저닝](https://istio.io/latest/docs/concepts/security/id-prov.svg) 
+
+Istio는 다음과 같은 흐름을 사용하여 SDS (비밀 검색 서비스)를 통해 ID를 제공한다.
+
+1. istiod는 인증서 서명 요청 (CSR)을 수행하기 위해 gRPC 서비스를 제공한다.
+2. Envoy는 Envoy 비밀 검색 서비스 (SDS) API를 통해 인증서 및 키 요청을 보낸다.
+3. SDS 요청을 수신하면 Istio 에이전트는 서명을 위해 자격 증명을 사용하여 CSR을 보내기 전에 개인 키와 CSR을 만든다.
+4. CA는 CSR에 포함 된 자격 증명의 유효성을 검사하고 CSR에 서명하여 인증서를 생성한다.
+5. Istio 에이전트는 isvoy 및 개인 키에서받은 인증서를 Envoy SDS API를 통해 Envoy로 보낸다.
+6. 위의 CSR 프로세스는 인증서 및 키 순환을 위해 주기적으로 반복된다.
